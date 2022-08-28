@@ -3,3 +3,4 @@ constants
 .env
 configs
 public
+.vscode
