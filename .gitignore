@@ -4,3 +4,4 @@ constants
 configs
 public
 .vscode
+tests.js
