@@ -3,6 +3,7 @@ const createHttpError = require("http-errors");
 const { default: mongoose } = require("mongoose");
 const morgan = require("morgan");
 const path = require("path");
+const { parse } = require("url");
 const { MainRouter } = require("./routes/router");
 require("dotenv").config();
 
@@ -57,11 +58,15 @@ module.exports = class Application {
         this.#app.use(express.json())
         this.#app.use(express.urlencoded({ extended: true }));
         this.#app.use(express.static(path.join(__dirname, '..', "public")));
+        this.#app.use((req, res, next) => {
+            req.pathname = parse(req.url).pathname;
+            next()
+        })
     }
 
     ErrorHandler() {
         this.#app.use((req, res, next) => {
-            next(createError.NotFound("Route not found 🔍"))
+            next(createHttpError.NotFound("Route not found 🔍"))
         })
         this.#app.use((error, req, res, next) => {
             const serverError = createHttpError.InternalServerError()

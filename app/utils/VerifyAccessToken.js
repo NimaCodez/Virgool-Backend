@@ -5,6 +5,7 @@ require("dotenv").config();
 
 async function GetTokenFromHeaders(headers) {
     const token = await headers?.authorization?.split(" ")[1] || [];
+    console.log("GetToken: ", token)
     if (token) return token;
     throw createHttpError.Unauthorized("Please Login To Your Account")
 }
@@ -19,12 +20,13 @@ function SignAccessToken(user) {
 
 async function VerifyAccessToken(req, res, next) {
     try {
-        const token = GetTokenFromHeaders(req.headers).then(token => token)
+        const token = await GetTokenFromHeaders(req.headers)
+        console.log("VerifyAccessT: ", token)
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, async (err, payload) => {
             try {
                 if (err) throw createHttpError.Unauthorized("Login To Your Account")
                 const { username } = payload;
-                const user = UserModel.findOne({ username }, { password: 0 })
+                const user = await UserModel.findOne({ username }, { password: 0 })
                 if (!user) throw createHttpError.Unauthorized("Username Or Password is incorrect")
                 req.user = user;
                 return next()

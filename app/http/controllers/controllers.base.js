@@ -1,11 +1,7 @@
 const autoBind = require("auto-bind");
 
-class Controller {
+module.exports = class ControllerBase {
     constructor() {
         autoBind(this)
     }
-}
-
-module.exports = {
-    ControllerBase: new Controller(),
 }
