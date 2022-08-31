@@ -8,8 +8,10 @@ class AuthController extends ControllerBase {
     async SignUp(req, res, next) {
         try {
             const { username, password, firstName, lastName } = req.body;
+            req.body.profileImage = path.join(req.body.fileUploadPath, req.body.filename).replace(/\\/gi, "/")
+            const profileImage = req.body.image;
             const CreateUserResult = await UserModel.create({
-                username, password: HashString(password), firstName, lastName
+                username, password: HashString(password), firstName, lastName, profileImage
             })
             if (!CreateUserResult) throw createHttpError.InternalServerError("Sorry! we were not able to create your account, Please try again later")
             return res.status(201).json({

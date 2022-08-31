@@ -13,6 +13,8 @@ const UserSchema = new Schema({
     token: { type: String, default: "" },
 })
 
+UserSchema.index({ username: "text", phoneNumber: "text" })
+
 const UserModel = model("users", UserSchema)
 
 module.exports = {
