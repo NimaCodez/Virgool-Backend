@@ -5,7 +5,7 @@ const { FileUpload } = require("../../utils/FileUpload");
 
 const AuthRouter = require("express").Router();
 
-AuthRouter.post("/signup", SignUpValidator(), validationErrorMapper, FileUpload.single("profileImage"), AuthController.SignUp)
+AuthRouter.post("/signup", SignUpValidator(), validationErrorMapper, AuthController.SignUp)
 AuthRouter.post("/login", LoginValidator(), validationErrorMapper, AuthController.Login)
 
 module.exports = {

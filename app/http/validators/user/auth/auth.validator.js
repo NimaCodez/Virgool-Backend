@@ -14,6 +14,7 @@ function SignUpValidator() {
         body("password").notEmpty().isString().isLength({ min: 6, max: 25 }).withMessage(createHttpError.BadRequest("Password must be from 6 to 25 chars")),
         body("firstName").optional().isString().isLength({ min: 3, max: 20 }).withMessage(createHttpError.BadRequest("First name can't be less than 3 or more than 20 chars")),
         body("lastName").optional().isString().isLength({ min: 3, max: 20 }).withMessage(createHttpError.BadRequest("Last name can't be less than 3 or more than 20 chars")),
+        body("profileImage").optional()
     ]
 }
 

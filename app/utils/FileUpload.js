@@ -1,13 +1,14 @@
 const md5 = require("md5");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const CreateFilePath = (req) => {
     const date = new Date();
     const year = date.getFullYear().toString();
     const month = date.getMonth().toString();
     const day = date.getDate().toString();
-    const pathname = req.pathname.split("/")[0];
+    const pathname = req.pathname.split("/")[1];
     const directory = path.join(__dirname, "..", "..", "public", "uploads", pathname, year, month, day)
     req.body.fileUploadPath = path.join("uploads", pathname, year, month, day)
     fs.mkdirSync(directory, { recursive: true })
@@ -29,11 +30,11 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         if (file?.originalname) {
             const ext = path.extname(file.originalname)
-            const filename = String(CreateImageNameHash(file.originalname), ext)
+            const filename = String(CreateImageNameHash(file.originalname) + ext)
             req.body.filename = filename;
-            cb(null, filename)
+            return cb(null, filename)
         }
-        cb (null, null)
+        cb(null, null)
     }
 })
 
@@ -43,7 +44,7 @@ function FileFilter(req, file, cb) {
     if (MimeTypes.includes(Ext)) {
         return cb(null, true)
     }
-    return cb(createHttpError.BadRequest("File Format is not correct! 🗿🗿 "))
+    return cb(createHttpError.BadRequest("File Format is not correct! "))
 }
 
 const maxSize = 10 * 1000 * 1000; // 10MB

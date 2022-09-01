@@ -9,7 +9,7 @@ const ProfileRouter = require("express").Router();
 ProfileRouter.get("/", VerifyAccessToken, ProfileController.GetProfile)
 ProfileRouter.patch("/edit-profile", EditProfileValidator(), validationErrorMapper, VerifyAccessToken, ProfileController.EditProfile)
 ProfileRouter.patch("/upload-profile", VerifyAccessToken, FileUpload.single("profileImage"), ProfileController.UploadProfilePicture)
-// ProfileRouter.delete("/delete-account", VerifyAccessToken, ProfileController.EditProfile)
+ProfileRouter.delete("/delete-account/:username", VerifyAccessToken, ProfileController.DeleteAccount)
 
 module.exports = {
     ProfileRouter
