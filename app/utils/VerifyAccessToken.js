@@ -37,7 +37,24 @@ async function VerifyAccessToken(req, res, next) {
     }
 }
 
+async function VerifyAccessTokenInGraphQL(req) {
+    try {
+        const token = await GetTokenFromHeaders(req.body.variables);
+        const { username } = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+        const user = await UserModel.findOne(
+            { username },
+            { password: 0 }
+        );
+        console.log(user)
+        if (!user) throw new createHttpError.Unauthorized("No Account was found");
+        return user;
+    } catch (error) {
+        throw new createHttpError.Unauthorized();
+    }
+}
+
 module.exports = {
     SignAccessToken,
-    VerifyAccessToken
+    VerifyAccessToken,
+    VerifyAccessTokenInGraphQL
 }
