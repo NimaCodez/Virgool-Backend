@@ -24,11 +24,11 @@ class PostController extends ControllerBase {
 
     async PublishPost(req, res, next) {
         try {
-            const { title, intro, bodyText } = req.body;
+            const { title, intro, bodyText, categories } = req.body;
             req.body.image = path.join(req.body.fileUploadPath, req.body.filename).replace(/\\/gi, "/");
             const banner = req.body.image;
             const PublishPostResult = await PostModel.create({
-                title, intro, bodyText, banner, author: req.user._id
+                title, intro, bodyText, banner, categories, author: req.user._id
             })
             if (!PublishPostResult) throw new createHttpError.InternalServerError("Sorry your Post wasn't published, we promise this will be ok, try again in a few seconds")
             return res.status(200).json({
