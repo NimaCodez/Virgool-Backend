@@ -4,7 +4,7 @@ const PostSchema = new Schema({
     title: { type: String, required: true }, // Post's main title
     intro: { type: String, required: true }, // Post's short intro text
     bodyText: { type: String, required: true }, // Post's actual content and text
-    author: { type: Types.ObjectId, required: true }, // Post's author
+    author: { type: Types.ObjectId, required: true, ref: "users" }, // Post's author
     banner: { type: String, required: true }, // Image related to content and title
     contentImages: { type: [String] }, // Post's body images such as example images, inserted ones and ...
     stars: { type: [Number], default: [] } //? blogs/start/:blogId | // Counts of starts users give

@@ -8,9 +8,14 @@ const CreateFilePath = (req) => {
     const year = date.getFullYear().toString();
     const month = date.getMonth().toString();
     const day = date.getDate().toString();
-    const pathname = req.pathname.split("/")[1];
-    const directory = path.join(__dirname, "..", "..", "public", "uploads", pathname, year, month, day)
-    req.body.fileUploadPath = path.join("uploads", pathname, year, month, day)
+    const rootpath = req.pathname.split("/")[1];
+    const subpath = req.pathname.split("/")[2];
+    let subpathString = "posts";
+    console.log(subpath, rootpath)
+    let directory;
+    if (subpath == "new-post") directory = path.join(__dirname, "..", "..", "public", "uploads", rootpath, req.user.username, subpathString, year, month, day)
+    else directory =  path.join(__dirname, "..", "..", "public", "uploads", rootpath, req.user.username, year, month, day)
+    req.body.fileUploadPath = path.join("uploads", rootpath, year, month, day)
     fs.mkdirSync(directory, { recursive: true })
     return directory;
 }
