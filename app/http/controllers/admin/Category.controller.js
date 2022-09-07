@@ -21,7 +21,7 @@ class CategoryController extends ControllerBase {
 
     async GetAllCategories(req, res, next) {
         try {
-           
+            const categories = await CategoryModel.find({})
         } catch (error) {
             next(error)
         }
@@ -31,7 +31,7 @@ class CategoryController extends ControllerBase {
             const { title, parent } = req.body;
             const CreateResult = await CategoryModel.create({ title, parent });
             if (!CreateResult) throw createHttpError.InternalServerError("Category was not created!")
-            return res.status(201) .json({
+            return res.status(201).json({
                 status: 201,
                 success: true,
                 data: {
@@ -45,7 +45,19 @@ class CategoryController extends ControllerBase {
 
     async EditCategory(req, res, next) {
         try {
-            
+            const { id } = req.params;
+            const category = await CategoryModel.findById(id);
+            if (!category) throw createHttpError.NotFound("No categories was found")
+            const { title, parent } = req.body;
+            const UpdateResult = await CategoryModel.updateOne({ _id: id }, { $set: { title, parent } });
+            if (!UpdateResult.modifiedCount) throw createHttpError.InternalServerError("Category was not updated")
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                data: {
+                    message: "Category was updated successfully! 🎉"
+                }
+            })
         } catch (error) {
             next(error)
         }
@@ -53,7 +65,18 @@ class CategoryController extends ControllerBase {
 
     async DeleteCategory(req, res, next) {
         try {
-            
+            const { id } = req.params;
+            const category = await CategoryModel.findById(id);
+            if (!category) throw createHttpError.NotFound("No categories was found")
+            const DeleteResult = await CategoryModel.deleteOne({ _id: id });
+            if (!DeleteResult.deletedCount) throw createHttpError.InternalServerError("Category was not deleted")
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                data: {
+                    message: "Category was deleted successfully! 🎉"
+                }
+            })
         } catch (error) {
             next(error)
         }

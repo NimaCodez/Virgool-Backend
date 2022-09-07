@@ -1,3 +1,4 @@
+const PostsController = require("../../http/controllers/user/Posts.controller");
 const { PostController } = require("../../http/controllers/user/Posts.controller");
 const { ProfileController } = require("../../http/controllers/user/Profile.controller");
 const { validationErrorMapper } = require("../../http/middlewares/functions");
