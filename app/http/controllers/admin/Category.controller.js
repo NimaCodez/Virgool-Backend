@@ -26,6 +26,7 @@ class CategoryController extends ControllerBase {
             next(error)
         }
     }
+    
     async AddNewCategory(req, res, next) {
         try {
             const { title, parent } = req.body;
