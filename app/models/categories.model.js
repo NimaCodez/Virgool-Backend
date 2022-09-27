@@ -3,6 +3,10 @@ const { Schema, model, Types } = require("mongoose");
 const CategorySchema = new Schema({
     title: { type: String, required: true },
     parent : { type: Types.ObjectId, ref: "categories", default : undefined }
+}, {
+    toJSON: {
+        virtuals: true
+    }
 })
 
 CategorySchema.virtual("children", {

@@ -21,12 +21,26 @@ class CategoryController extends ControllerBase {
 
     async GetAllCategories(req, res, next) {
         try {
-            const categories = await CategoryModel.find({})
+            const categories = await CategoryModel.aggregate([
+                { $match: {} },
+                {
+                    $project: {
+                        __v: 0
+                    }
+                }
+            ])
+            return res.status(200).json({
+                status: 200,
+                succesS: true,
+                data: {
+                    categories
+                }
+            })
         } catch (error) {
             next(error)
         }
     }
-    
+
     async AddNewCategory(req, res, next) {
         try {
             const { title, parent } = req.body;
